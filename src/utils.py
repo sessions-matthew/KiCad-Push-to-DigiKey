@@ -57,7 +57,7 @@ def parse_property_line(line: str):
     # KiCad 7.0
     # '    (property "Reference" "R2" (at 90.17 80.645 0)'
     # --> name: "Reference", value: "R2"
-    property_line_regex = re.compile(r'^\s{4}\(property "(.*)" "(.*)"')
+    property_line_regex = re.compile(r'\(property "(.*)" "(.*)"')
     if not property_line_regex.search(line):
         return
     _name, _value = property_line_regex.findall(line)[0]
@@ -101,20 +101,29 @@ def get_symbol_dict(kicad_sch_path):
     # }
     symbols = {}
     new_symbol = False
+    with_lib_id = False
     curr_uuid = None
     with open(kicad_sch_path, 'r', encoding='utf-8') as fi:
         lines = fi.readlines()
     for num, line in enumerate(lines):
-        if '  (symbol (lib_id' in line:
+        if '  (symbol ' in line or '\t(symbol' in line:
             new_symbol = True
+            with_lib_id = False
             curr_uuid = None
-        if '    (uuid' in line and new_symbol:
+        if '(lib_id' in line and new_symbol:
+            with_lib_id = True
+        if '(uuid' in line and with_lib_id:
             new_symbol = False
+            with_lib_id = False
             curr_uuid = parse_uuid(line)
             symbols[curr_uuid] = []
-        if '    (property ' in line and curr_uuid:
+        if '(property ' in line and curr_uuid:
             symbol_property = parse_property_line(line)
             symbols[curr_uuid].append(symbol_property)
+        if '  )' in line and new_symbol:
+            new_symbol = False
+            with_lib_id = False
+            curr_uuid = None
     return symbols
 
 
