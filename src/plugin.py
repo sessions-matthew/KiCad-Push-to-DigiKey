@@ -10,6 +10,7 @@ except:
 import os
 import pcbnew
 import wx
+from datetime import datetime
 import wx.lib.mixins.listctrl as listmix
 from .ki_result_event import EVT_RESULT
 from .ki_push_thread import PushThread
@@ -41,7 +42,7 @@ class BOMFrame(wx.Frame):
         board = pcbnew.GetBoard()
         pcb_path = board.GetFileName()
         self.kicad_sch_path = pcb_2_sch_path(pcb_path)
-        self.list_name = get_sch_file_name(self.kicad_sch_path)
+        self.list_name = datetime.today().strftime('%Y%m%d') + "_" + get_sch_file_name(self.kicad_sch_path)
         self.wx_md = None
 
         try:
