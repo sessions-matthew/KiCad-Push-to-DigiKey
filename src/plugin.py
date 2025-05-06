@@ -146,6 +146,8 @@ class BOMFrame(wx.Frame):
         self.wx_bom_lc.InsertColumn(2, 'Quantity*', wx.LIST_FORMAT_LEFT, 75)
         self.wx_bom_lc.InsertColumn(3, 'Customer Reference', wx.LIST_FORMAT_LEFT, 600)
 
+        symbol_dict = dict(sorted(symbol_dict.items()))
+
         # rows
         _idx = 0
         for _idx, symbol_pn in enumerate(symbol_dict):
