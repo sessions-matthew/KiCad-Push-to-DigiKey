@@ -14,7 +14,7 @@ from datetime import datetime
 import wx.lib.mixins.listctrl as listmix
 from .ki_result_event import EVT_RESULT
 from .ki_push_thread import PushThread
-from .utils import get_symbol_dict, auto_select_part_number_field, \
+from .utils import get_symbol_dict, \
     pcb_2_sch_path, get_sch_file_name, json_from_bom__with_pn_as_key
 
 class EditableListCtrl(wx.ListCtrl, listmix.TextEditMixin):
@@ -65,7 +65,6 @@ class BOMFrame(wx.Frame):
                 .format(path=self.kicad_sch_path)
             self.show_error_message_then_exit(error_message, error_caption)
 
-        self.auto_pn_field_dict = auto_select_part_number_field(self.symbol_dict)
         self.current_pn_field_str = "Partno"
         # layout
         self.panel = wx.Panel(self)
