@@ -88,7 +88,7 @@ def parse_bom(file_path):
 def get_symbol_dict(kicad_sch_path):
     destxml = pathlib.Path(kicad_sch_path).resolve().parent.joinpath('bom.xml')
     if sys.platform == 'darwin':
-        os.system("/Applications/KiCad/KiCad.app/Contents/MacOS/kicad-cli sch export python-bom -o " + str(destxml))
+        os.system("/Applications/KiCad/KiCad.app/Contents/MacOS/kicad-cli sch export python-bom " + str(kicad_sch_path) + " -o " + str(destxml))
     else:
         raise Exception("Unsupported platform")
     return parse_bom(destxml)
